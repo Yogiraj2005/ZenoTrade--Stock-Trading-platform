@@ -6,8 +6,38 @@ import { Tooltip, Grow } from "@mui/material";
 import { watchlist } from "../data/data";
 
 import { KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
+import { DoughnutChart } from "./DoughnoutChart";
+
+const labels  = watchlist.map((subArray)=>subArray["name"]);
 
 const WatchList = () => {
+
+  const data ={
+    labels,
+    datasets: [
+    {
+      label: 'Price',
+      data: watchlist.map((stock)=> stock.price),
+      backgroundColor: [
+        'rgba(229, 35, 77, 0.3)',
+        'rgba(54, 162, 235, 0.3)',
+        'rgba(255, 206, 86, 0.3)',
+        'rgba(75, 192, 192, 0.3)',
+        'rgba(153, 102, 255, 0.3)',
+        'rgba(255, 159, 64, 0.3)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 5)',
+        'rgba(8, 149, 243, 1)',
+        'rgba(239, 174, 7, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },]
+  }
+
   return (
     <div className="watchlist-container">
       <div className="search-container">
@@ -26,6 +56,7 @@ const WatchList = () => {
           return <WatchListItem stock={stock} key={index} />;
         })}
       </ul>
+      <DoughnutChart data={data}/>
     </div>
   );
 };
