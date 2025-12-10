@@ -4,6 +4,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const authRoute = require("./Routes/AuthRoute");
+const { userVerification } = require("./middlewares/AuthMiddleware");
+const jwt = require("jsonwebtoken");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
 const { PositionsModel } = require("./model/PositionsModel");
@@ -14,8 +18,31 @@ const uri = process.env.MONGO_URL;
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 app.use(bodyParser.json());
+app.use("/", authRoute);
+
+// Middleware to extract userId from JWT
+const getUserIdFromToken = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  jwt.verify(token, process.env.TOKEN_KEY, (err, data) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    req.userId = data.id;
+    next();
+  });
+};
 
 // app.get("/addHoldings", async(req, res)=>{
 //     let tempHoldings=[
@@ -184,18 +211,19 @@ app.use(bodyParser.json());
 //   res.send("Positions saved");
 // });
 
-app.get("/allHoldings", async (req, res) => {
-  let allHoldings = await HoldingsModel.find({});
+app.get("/allHoldings", getUserIdFromToken, async (req, res) => {
+  let allHoldings = await HoldingsModel.find({ userId: req.userId });
   res.json(allHoldings);
 });
 
-app.get("/allPositions", async (req, res) => {
-  let allPositions = await PositionsModel.find({});
+app.get("/allPositions", getUserIdFromToken, async (req, res) => {
+  let allPositions = await PositionsModel.find({ userId: req.userId });
   res.json(allPositions);
 });
 
-app.post("/newOrder", async (req, res) => {
+app.post("/newOrder", getUserIdFromToken, async (req, res) => {
   let newOrder = new OrdersModel({
+    userId: req.userId,
     name: req.body.name,
     qty: req.body.qty,
     price: req.body.price,
@@ -206,20 +234,38 @@ app.post("/newOrder", async (req, res) => {
   res.send("Orders saved");
 });
 
-//Fetching orders
-app.get("/allOrders",async(req, res)=>{
-  let allOrders = await OrdersModel.find({});
+//Fetching orders (user-specific)
+app.get("/allOrders", getUserIdFromToken, async (req, res) => {
+  let allOrders = await OrdersModel.find({ userId: req.userId });
   res.json(allOrders);
 });
 
-// Example Express.js endpoint
-app.delete("/sellOrder/:uid", async (req, res) => {
-  const { uid } = req.params;
+// Sell order endpoint (with authentication)
+app.post("/sellOrder", getUserIdFromToken, async (req, res) => {
+  const { name, qty, price, orderType, productType } = req.body;
+
   try {
-    await OrdersModel.deleteOne({ name: uid }); // deletes the stock from orders
-    res.status(200).send({ message: "Stock sold successfully" });
+    // Validate required fields
+    if (!name || !qty || !price) {
+      return res.status(400).send({ error: "Missing required fields: name, qty, price" });
+    }
+
+    // Create a SELL order (instead of deleting BUY orders)
+    const sellOrder = new OrdersModel({
+      userId: req.userId,
+      name: name,
+      qty: qty,
+      price: price,
+      mode: "SELL",
+      orderType: orderType || "MARKET",
+      productType: productType || "CNC",
+    });
+
+    await sellOrder.save();
+    res.status(200).send({ message: "Stock sold successfully", order: sellOrder });
   } catch (error) {
-    res.status(500).send({ error: "Error selling stock" });
+    console.error("Error selling stock:", error);
+    res.status(500).send({ error: "Error selling stock", details: error.message });
   }
 });
 
