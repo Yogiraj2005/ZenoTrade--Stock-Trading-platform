@@ -5,7 +5,7 @@ function OpenAccount() {
     return (
         <div className='container p-5 mb-5'>
             <div className='row text-center'>
-                <img className='mb-5' src='media/images/homeHero.png' alt='Hero Image' />
+                <img className='mb-5' src='Media/Images/homeHero.png' alt='Hero Image' />
                 <h1 className='mt-5'>Open a ZenoTrade account</h1>
                 <p>Modern platform and apps, ₹0 and flat ₹20 Intraday and F&O trades</p>
                 <Link to="/signup">

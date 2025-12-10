@@ -8,7 +8,7 @@ function Navbar() {
         style={{backgroundColor:"#fff"}}>
         <div class="container">
           <Link class="navbar-brand" href="#">
-            <img src="media/images/Zlogo.jpeg" style={{width:"23%"}}/>
+            <img src="Media/Images/Zlogo.jpeg" style={{width:"23%"}}/>
           </Link>
           <button
             class="navbar-toggler"
