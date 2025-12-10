@@ -22,7 +22,7 @@ A full-stack stock trading platform built with the MERN stack (MongoDB, Express,
 
 > **🚀 Want to try ZenoTrade immediately with pre-populated data?**
 
-### Demo Credentials
+### Demo Credentials for deployement link only
 ```
 Email: yo@gmail.com
 Password: 123
