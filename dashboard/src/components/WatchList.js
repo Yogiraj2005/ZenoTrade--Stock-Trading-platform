@@ -5,38 +5,58 @@ import { Tooltip, Grow } from "@mui/material";
 
 import { watchlist } from "../data/data";
 
-import { KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { DoughnutChart } from "./DoughnoutChart";
 
-const labels  = watchlist.map((subArray)=>subArray["name"]);
-
 const WatchList = () => {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const data ={
-    labels,
+  // Filter watchlist based on search query
+  const filteredWatchlist = watchlist.filter((stock) =>
+    stock.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Define color palette with increased opacity (0.7)
+  const colorPalette = [
+    { bg: 'rgba(229, 35, 77, 0.7)', border: 'rgba(229, 35, 77, 1)' },
+    { bg: 'rgba(54, 162, 235, 0.7)', border: 'rgba(54, 162, 235, 1)' },
+    { bg: 'rgba(255, 206, 86, 0.7)', border: 'rgba(255, 206, 86, 1)' },
+    { bg: 'rgba(75, 192, 192, 0.7)', border: 'rgba(75, 192, 192, 1)' },
+    { bg: 'rgba(153, 102, 255, 0.7)', border: 'rgba(153, 102, 255, 1)' },
+    { bg: 'rgba(255, 159, 64, 0.7)', border: 'rgba(255, 159, 64, 1)' },
+  ];
+
+  // Generate colors for filtered stocks - maintain original index
+  const getColors = () => {
+    const bgColors = [];
+    const borderColors = [];
+    filteredWatchlist.forEach((stock) => {
+      // Find the original index of this stock in the full watchlist
+      const originalIndex = watchlist.findIndex(s => s.name === stock.name);
+      const colorIndex = originalIndex % colorPalette.length;
+      bgColors.push(colorPalette[colorIndex].bg);
+      borderColors.push(colorPalette[colorIndex].border);
+    });
+    return { bgColors, borderColors };
+  };
+
+  const { bgColors, borderColors } = getColors();
+
+  const data = {
+    labels: filteredWatchlist.map((stock) => stock.name),
     datasets: [
-    {
-      label: 'Price',
-      data: watchlist.map((stock)=> stock.price),
-      backgroundColor: [
-        'rgba(229, 35, 77, 0.3)',
-        'rgba(54, 162, 235, 0.3)',
-        'rgba(255, 206, 86, 0.3)',
-        'rgba(75, 192, 192, 0.3)',
-        'rgba(153, 102, 255, 0.3)',
-        'rgba(255, 159, 64, 0.3)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 5)',
-        'rgba(8, 149, 243, 1)',
-        'rgba(239, 174, 7, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },]
+      {
+        label: 'Price',
+        data: filteredWatchlist.map((stock) => stock.price),
+        backgroundColor: bgColors,
+        borderColor: borderColors,
+        borderWidth: 1,
+      },]
   }
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   return (
     <div className="watchlist-container">
@@ -45,18 +65,26 @@ const WatchList = () => {
           type="text"
           name="search"
           id="search"
-          placeholder="Search eg:infy, bse, nifty fut weekly, gold mcx"
+          placeholder="Search stocks..."
           className="search"
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
-        <span className="counts"> {watchlist.length} / 50</span>
+        <span className="counts"> {filteredWatchlist.length} / {watchlist.length}</span>
       </div>
 
       <ul className="list">
-        {watchlist.map((stock, index) => {
-          return <WatchListItem stock={stock} key={index} />;
-        })}
+        {filteredWatchlist.length > 0 ? (
+          filteredWatchlist.map((stock, index) => {
+            return <WatchListItem stock={stock} key={index} />;
+          })
+        ) : (
+          <li style={{ padding: "20px", textAlign: "center", color: "#999" }}>
+            No stocks found
+          </li>
+        )}
       </ul>
-      <DoughnutChart data={data}/>
+      <DoughnutChart data={data} />
     </div>
   );
 };
@@ -95,12 +123,16 @@ const WatchListItem = ({ stock }) => {
 const WatchListActions = ({ uid }) => {
   const generalContext = useContext(GeneralContext);
 
+  // Find stock price from watchlist
+  const stock = watchlist.find(s => s.name === uid);
+  const stockPrice = stock ? stock.price : 0;
+
   const handleBuyClick = () => {
-    generalContext.openBuyWindow(uid);
+    generalContext.openBuyWindow(uid, stockPrice);
   };
 
-  const handleSellClick = () =>{
-    generalContext.openSellWindow(uid);
+  const handleSellClick = () => {
+    generalContext.openSellWindow(uid, stockPrice);
   }
 
   return (
@@ -124,21 +156,6 @@ const WatchListActions = ({ uid }) => {
         >
           <button className="sell">Sell</button>
         </Tooltip>
-        {/* <Tooltip
-          title="Analytics (A)"
-          placement="top"
-          arrow
-          TransitionComponent={Grow}
-        >
-          <button className="action">
-            <BarChartOutlined className="icon" />
-          </button>
-        </Tooltip>
-        <Tooltip title="More" placement="top" arrow TransitionComponent={Grow}>
-          <button className="action">
-            <MoreHoriz className="icon" />
-          </button>
-        </Tooltip> */}
       </span>
     </span>
   );

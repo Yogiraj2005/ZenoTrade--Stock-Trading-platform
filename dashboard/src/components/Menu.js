@@ -1,101 +1,161 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+  Typography,
+  Divider,
+  IconButton,
+  Menu as MuiMenu,
+  MenuItem,
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import AppsIcon from "@mui/icons-material/Apps";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-import { Link } from "react-router-dom";
+const Menu = ({ user }) => {
+  const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
 
-const Menu = () => {
-  const [selectedMenu, setSelectedMenu] = useState(0);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const menuItems = [
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
+    { text: "Orders", icon: <ShoppingCartIcon />, path: "/orders" },
+    { text: "Holdings", icon: <AccountBalanceWalletIcon />, path: "/holdings" },
+    { text: "Positions", icon: <ShowChartIcon />, path: "/positions" },
+    { text: "Funds", icon: <TrendingUpIcon />, path: "/funds" },
+    { text: "Apps", icon: <AppsIcon />, path: "/apps" },
+  ];
 
-  const handleMenuClick = (index) => {
-    setSelectedMenu(index);
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleProfileClick = (index) => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
-  const menuClass = "menu";
-  const activeMenuClass = "menu selected";
+  const handleLogout = () => {
+    // Implement logout logic
+    handleClose();
+  };
+
+  const getUserInitials = () => {
+    if (user?.displayName) {
+      return user.displayName
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    if (user?.email) {
+      return user.email.slice(0, 2).toUpperCase();
+    }
+    return "U";
+  };
 
   return (
-    <div className="menu-container">
-      <img src="logo.png" style={{ width: "50px" }} />
-      <div className="menus">
-        <ul>
-          <li>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/"
-              onClick={() => handleMenuClick(0)}
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+      }}
+    >
+      {/* Desktop Menu */}
+      <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+        {menuItems.map((item, index) => (
+          <Link
+            key={index}
+            to={item.path}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Box
+              sx={{
+                px: 2,
+                py: 1,
+                borderRadius: 1,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                bgcolor: location.pathname === item.path ? "#f0f0f0" : "transparent",
+                color:
+                  location.pathname === item.path ? "primary.main" : "text.secondary",
+                fontWeight: location.pathname === item.path ? 600 : 400,
+                transition: "all 0.2s",
+                "&:hover": {
+                  bgcolor: "#f5f5f5",
+                  color: "primary.main",
+                },
+              }}
             >
-              <p className={selectedMenu === 0 ? activeMenuClass : menuClass}>
-                Dashboard
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/orders"
-              onClick={() => handleMenuClick(1)}
-            >
-              <p className={selectedMenu === 1 ? activeMenuClass : menuClass}>
-                Orders
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/holdings"
-              onClick={() => handleMenuClick(2)}
-            >
-              <p className={selectedMenu === 2 ? activeMenuClass : menuClass}>
-                Holdings
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/positions"
-              onClick={() => handleMenuClick(3)}
-            >
-              <p className={selectedMenu === 3 ? activeMenuClass : menuClass}>
-                Positions
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="funds"
-              onClick={() => handleMenuClick(4)}
-            >
-              <p className={selectedMenu === 4 ? activeMenuClass : menuClass}>
-                Funds
-              </p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/apps"
-              onClick={() => handleMenuClick(6)}
-            >
-              <p className={selectedMenu === 6 ? activeMenuClass : menuClass}>
-                Apps
-              </p>
-            </Link>
-          </li>
-        </ul>
-        <hr />
-        <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
-        </div>
-      </div>
-    </div>
+              <Box sx={{ fontSize: 20 }}>{item.icon}</Box>
+              <Typography variant="body2">{item.text}</Typography>
+            </Box>
+          </Link>
+        ))}
+      </Box>
+
+      {/* User Profile */}
+      <IconButton onClick={handleProfileClick} sx={{ ml: 1 }}>
+        <Avatar
+          sx={{
+            width: 36,
+            height: 36,
+            bgcolor: "primary.main",
+            fontSize: "0.9rem",
+          }}
+        >
+          {getUserInitials()}
+        </Avatar>
+      </IconButton>
+
+      <MuiMenu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Box sx={{ px: 2, py: 1, minWidth: 200 }}>
+          <Typography variant="body2" fontWeight={600}>
+            {user?.displayName || user?.email || "User"}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {user?.email}
+          </Typography>
+        </Box>
+        <Divider />
+        <MenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <AccountCircleIcon fontSize="small" />
+          </ListItemIcon>
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </MuiMenu>
+    </Box>
   );
 };
 
