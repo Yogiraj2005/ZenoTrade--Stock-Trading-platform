@@ -20,6 +20,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import { watchlist } from "../data/data";
+import API_URL from "../api";
 
 const Summary = ({ user }) => {
   const [loading, setLoading] = useState(true);
@@ -43,7 +44,7 @@ const Summary = ({ user }) => {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const { data: orders } = await axios.get("http://localhost:3002/allOrders", {
+      const { data: orders } = await axios.get(`${API_URL}/allOrders`, {
         withCredentials: true,
       });
 

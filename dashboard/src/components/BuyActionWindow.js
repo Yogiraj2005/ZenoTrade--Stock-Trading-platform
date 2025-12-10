@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+import API_URL from "../api";
+
 import GeneralContext from "./GeneralContext";
 
 const BuyActionWindow = ({ uid, stockPrice = 0 }) => {
@@ -52,7 +54,7 @@ const BuyActionWindow = ({ uid, stockPrice = 0 }) => {
     setLoading(true);
     try {
       await axios.post(
-        "http://localhost:3002/newOrder",
+        `${API_URL}/newOrder`,
         {
           name: uid,
           qty: quantity,

@@ -22,6 +22,7 @@ import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import GeneralContext from "./GeneralContext";
 import { watchlist } from "../data/data";
+import API_URL from "../api";
 
 const Positions = () => {
   const [positions, setPositions] = useState([]);
@@ -35,7 +36,7 @@ const Positions = () => {
   const fetchPositions = async () => {
     setLoading(true);
     try {
-      const { data: orders } = await axios.get("http://localhost:3002/allOrders", {
+      const { data: orders } = await axios.get(`${API_URL}/allOrders`, {
         withCredentials: true,
       });
 

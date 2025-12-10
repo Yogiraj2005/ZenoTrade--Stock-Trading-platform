@@ -22,6 +22,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SellIcon from "@mui/icons-material/Sell";
 
+import API_URL from "../api";
+
 const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -39,7 +41,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:3002/allOrders", {
+      const { data } = await axios.get(`${API_URL}/allOrders`, {
         withCredentials: true,
       });
       setAllOrders(data);
@@ -67,7 +69,7 @@ const Orders = () => {
 
   const handleDeleteOrder = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:3002/deleteOrder/${orderId}`, {
+      await axios.delete(`${API_URL}/deleteOrder/${orderId}`, {
         withCredentials: true,
       });
       toast.success("Order deleted successfully");

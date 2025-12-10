@@ -23,6 +23,8 @@ import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 
 import GeneralContext from "./GeneralContext";
 
+import API_URL from "../api";
+
 const SellActionWindow = ({ uid, stockPrice = 0 }) => {
   const generalContext = useContext(GeneralContext);
   const [orders, setOrders] = useState(null);
@@ -36,7 +38,7 @@ const SellActionWindow = ({ uid, stockPrice = 0 }) => {
     // Fetch user's orders to check if they own this stock
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3002/allOrders", {
+        const { data } = await axios.get(`${API_URL}/allOrders`, {
           withCredentials: true,
         });
 
@@ -123,7 +125,7 @@ const SellActionWindow = ({ uid, stockPrice = 0 }) => {
     try {
       // Create a SELL order (instead of deleting)
       await axios.post(
-        "http://localhost:3002/sellOrder",
+        `${API_URL}/sellOrder`,
         {
           name: uid,
           qty: quantity,

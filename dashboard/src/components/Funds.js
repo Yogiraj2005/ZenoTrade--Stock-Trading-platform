@@ -14,6 +14,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 
+import API_URL from "../api";
+
 const Funds = () => {
   const [loading, setLoading] = useState(true);
   const [fundsData, setFundsData] = useState({
@@ -30,7 +32,7 @@ const Funds = () => {
   const calculateMargins = async () => {
     setLoading(true);
     try {
-      const { data: orders } = await axios.get("http://localhost:3002/allOrders", {
+      const { data: orders } = await axios.get(`${API_URL}/allOrders`, {
         withCredentials: true,
       });
 

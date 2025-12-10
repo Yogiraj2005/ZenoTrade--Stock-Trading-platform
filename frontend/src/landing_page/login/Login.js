@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
+import API_URL from "../../api";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login = () => {
         e.preventDefault();
         try {
             const { data } = await axios.post(
-                "http://localhost:3002/login",
+                `${API_URL}/login`,
                 {
                     ...inputValue,
                 },
@@ -42,7 +43,12 @@ const Login = () => {
                     password: "",
                 });
                 setTimeout(() => {
-                    window.location.href = "http://localhost:3001"; // Redirect to Dashboard
+                    const isLocal = window.location.hostname ==="localhost" || window.location.hostname === "127.0.0.1";
+
+                    const dashboardUrl = isLocal
+                        ?"http://localhost:3001"
+                        :"https://zenotrade-dashboard.onrender.com"
+                    window.location.href = `${dashboardUrl}`; // Redirect to Dashboard
                 }, 100);
             } else {
                 handleError(message);

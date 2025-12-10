@@ -20,6 +20,8 @@ import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import { VerticalGraph } from "./VerticalGraph";
 import { watchlist } from "../data/data";
 
+import API_URL from "../api";
+
 const Holdings = () => {
   const [holdings, setHoldings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +33,7 @@ const Holdings = () => {
   const fetchHoldings = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:3002/allOrders", {
+      const { data } = await axios.get(`${API_URL}/allOrders`, {
         withCredentials: true,
       });
 
