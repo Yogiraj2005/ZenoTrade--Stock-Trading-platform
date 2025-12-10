@@ -9,7 +9,7 @@ function Hero() {
                 <h1 className='mt-5'>Invest in everything</h1>
                 <p>Online platform to invest in stocks, derivatives, mutual funds, ETFs, bonds, and more.</p>
                 <Link to="/signup">
-                    <button className=' mb-5 p-2 btn btn-primary fs-5' style={{ width: "100%" }}>Signup Now</button>
+                    <button className=' mb-5 p-2 btn btn-primary fs-5' style={{ width: "18%" }}>Signup Now</button>
                 </Link>
             </div>
         </div>

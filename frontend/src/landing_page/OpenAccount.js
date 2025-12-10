@@ -9,7 +9,7 @@ function OpenAccount() {
                 <h1 className='mt-5'>Open a ZenoTrade account</h1>
                 <p>Modern platform and apps, ₹0 and flat ₹20 Intraday and F&O trades</p>
                 <Link to="/signup">
-                    <button className=' mb-5 p-2 btn btn-primary fs-5' style={{ width: "100%" }}>Sign up Now</button>
+                    <button className=' mb-5 p-2 btn btn-primary fs-5' style={{ width: "18%" }}>Sign up Now</button>
                 </Link>
             </div>
         </div>
