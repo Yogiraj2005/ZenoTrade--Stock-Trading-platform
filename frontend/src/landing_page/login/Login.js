@@ -49,7 +49,7 @@ const Login = () => {
                         ?"http://localhost:3001"
                         :"https://zenotrade-dashboard.onrender.com"
                     window.location.href = `${dashboardUrl}`; // Redirect to Dashboard
-                }, 100);
+                }, 500);
             } else {
                 handleError(message);
             }
