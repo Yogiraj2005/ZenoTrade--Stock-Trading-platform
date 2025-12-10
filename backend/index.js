@@ -20,7 +20,12 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:3001","https://zenotrade-frontend.onrender.com", "https://zenotrade-dashboard.onrender.com"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://zenotrade-frontend.onrender.com",
+      "https://zenotrade-dashboard.onrender.com",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -247,7 +252,9 @@ app.post("/sellOrder", getUserIdFromToken, async (req, res) => {
   try {
     // Validate required fields
     if (!name || !qty || !price) {
-      return res.status(400).send({ error: "Missing required fields: name, qty, price" });
+      return res
+        .status(400)
+        .send({ error: "Missing required fields: name, qty, price" });
     }
 
     // Create a SELL order (instead of deleting BUY orders)
@@ -262,13 +269,16 @@ app.post("/sellOrder", getUserIdFromToken, async (req, res) => {
     });
 
     await sellOrder.save();
-    res.status(200).send({ message: "Stock sold successfully", order: sellOrder });
+    res
+      .status(200)
+      .send({ message: "Stock sold successfully", order: sellOrder });
   } catch (error) {
     console.error("Error selling stock:", error);
-    res.status(500).send({ error: "Error selling stock", details: error.message });
+    res
+      .status(500)
+      .send({ error: "Error selling stock", details: error.message });
   }
 });
-
 
 app.listen(PORT, () => {
   console.log("app started");
