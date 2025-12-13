@@ -33,9 +33,13 @@ const Login = () => {
         { withCredentials: true }
       );
       console.log(data);
-      const { success, message } = data;
+      const { success, message, token } = data;
       if (success) {
         handleSuccess(message);
+        // Store token in localStorage for dashboard authentication
+        if (token) {
+          localStorage.setItem("token", token);
+        }
         setInputValue({
           email: "",
           password: "",
@@ -48,14 +52,9 @@ const Login = () => {
           const dashboardUrl = isLocal
             ? "http://localhost:3001"
             : "https://zenotrade-dashboard.onrender.com";
-          window.location.href = `${dashboardUrl}`; // Redirect to Dashboard
-        }, 500);
-        if (token) {
+          // Pass token as URL parameter to avoid localStorage sync issues
           window.location.href = `${dashboardUrl}?token=${token}`;
-        } else {
-          console.error("Login succeeded but no token found to pass!");
-          // Optional: Handle error (e.g., don't redirect)
-        }
+        }, 500);
       } else {
         handleError(message);
       }

@@ -29,15 +29,19 @@ const Signup = () => {
         e.preventDefault();
         try {
             const { data } = await axios.post(
-                `${API_URL}`,
+                `${API_URL}/signup`,
                 {
                     ...inputValue,
                 },
                 { withCredentials: true }
             );
-            const { success, message } = data;
+            const { success, message, token } = data;
             if (success) {
                 handleSuccess(message);
+                // Store token in localStorage for dashboard authentication
+                if (token) {
+                    localStorage.setItem("token", token);
+                }
                 setInputValue({
                     email: "",
                     password: "",
