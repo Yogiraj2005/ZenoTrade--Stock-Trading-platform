@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Stats () {
-    return ( 
-        <div className='container p-5'>
-            <div className='row p-5'>
-                <div className='col-6 p-5'>
-                    <h1 className="fs-2 mb-5">Trust with confidence</h1>
+function Stats() {
+    return (
+        <div className='container p-3 p-md-5'>
+            <div className='row p-3 p-md-5'>
+                <div className='col-12 col-md-6 p-3 p-md-5'>
+                    <h1 className="fs-2 mb-4 mb-md-5">Trust with confidence</h1>
                     <h2 className="fs-4">Customer-first always</h2>
                     <p className="text-muted">
                         That's why 1.3+ crore customers trust Zerodha with ₹3.5+ lakh crores
@@ -28,18 +28,18 @@ function Stats () {
                         money.
                     </p>
                 </div>
-                 <div className='col-6 p-5'>
-                    <img src='Media/Images/ecosystem.png' style={{width:"90%"}}></img>
-                    <div className='text-center'>
-                        <a href='' className='mx-5' style={{textDecoration:'none'}}>Explore our products <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
-                        <a href='' style={{textDecoration:'none'}}>Try Kite demo <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                <div className='col-12 col-md-6 p-3 p-md-5 text-center'>
+                    <img src='Media/Images/ecosystem.png' className='img-fluid' style={{ maxWidth: "90%" }} alt='Ecosystem'></img>
+                    <div className='text-center mt-4'>
+                        <a href='' className='me-3 me-md-5 d-inline-block mb-2' style={{ textDecoration: 'none' }}>Explore our products <i className="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                        <a href='' className='d-inline-block mb-2' style={{ textDecoration: 'none' }}>Try Kite demo <i className="fa fa-long-arrow-right" aria-hidden="true"></i></a>
 
 
                     </div>
                 </div>
             </div>
         </div>
-     );
+    );
 }
 
-export default Stats ;
+export default Stats;

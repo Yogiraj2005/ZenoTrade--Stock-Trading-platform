@@ -94,6 +94,7 @@
     font-size: 14px;
     margin-top: 20px;
     color: #666;
+    white-space: nowrap;
 }
 
 .switch-text a {
@@ -111,5 +112,15 @@
     .form-box {
         padding: 30px;
         width: 95%;
+    }
+
+    .switch-text {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 360px) {
+    .switch-text {
+        font-size: 12px;
     }
 }
