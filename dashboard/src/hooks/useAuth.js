@@ -97,7 +97,7 @@
 
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
 import API_URL from "../api";
 
@@ -122,11 +122,11 @@ const useAuth = () => {
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
-            console.log("🔍 useAuth: Token from", urlToken ? "URL" : "localStorage", ":", token ? "EXISTS" : "NOT FOUND");
+            // console.log("useAuth: Token from", urlToken ? "URL" : "localStorage", ":", token ? "EXISTS" : "NOT FOUND");
 
             // If we don't have a token, we aren't logged in. Redirect!
             if (!token) {
-                console.log("❌ useAuth: No token found, redirecting to login");
+                // console.log(" useAuth: No token found, redirecting to login");
                 handleLoginRedirect();
                 setLoading(false);
                 return;
@@ -134,7 +134,7 @@ const useAuth = () => {
 
             try {
                 // 2. Send the token in the Headers instead of using cookies
-                console.log("📡 useAuth: Sending token to backend for verification");
+                //console.log(" useAuth: Sending token to backend for verification");
                 const { data } = await axios.post(
                     `${API_URL}/`, // Make sure this route verifies the token on backend!
                     {},
@@ -145,19 +145,19 @@ const useAuth = () => {
                     }
                 );
 
-                console.log("📥 useAuth: Backend response:", data);
+                //console.log(" useAuth: Backend response:", data);
 
                 if (data.status) {
-                    console.log("✅ useAuth: Token verified, user authenticated");
+                    //console.log("✅useAuth: Token verified, user authenticated");
                     setUser(data.user);
                 } else {
                     // Token might be invalid or expired
-                    console.log("❌ useAuth: Backend returned status false:", data.message);
+                    // console.log("useAuth: Backend returned status false:", data.message);
                     localStorage.removeItem("token");
                     handleLoginRedirect();
                 }
             } catch (error) {
-                console.error("❌ useAuth: Auth verification failed:", error);
+                //console.error("useAuth: Auth verification failed:", error);
                 localStorage.removeItem("token");
                 handleLoginRedirect();
             } finally {
