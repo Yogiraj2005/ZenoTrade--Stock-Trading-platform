@@ -240,9 +240,9 @@ const Positions = () => {
                 <TableCell align="right">
                   <strong>P&L %</strong>
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <strong>Action</strong>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -283,7 +283,7 @@ const Positions = () => {
                       sx={{ fontWeight: 500 }}
                     />
                   </TableCell>
-                  <TableCell align="center">
+                  {/* <TableCell align="center">
                     <Tooltip title="Exit Position">
                       <Button
                         variant="outlined"
@@ -295,7 +295,7 @@ const Positions = () => {
                         Exit
                       </Button>
                     </Tooltip>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
