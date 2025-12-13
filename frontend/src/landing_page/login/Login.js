@@ -11,6 +11,7 @@ const Login = () => {
     password: "",
   });
   const { email, password } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -19,7 +20,7 @@ const Login = () => {
     });
   };
 
-  const handleError = (err) => alert(err); // Simple alert for now, can be improved to Toast
+  const handleError = (err) => alert(err);
   const handleSuccess = (msg) => alert(msg);
 
   const handleSubmit = async (e) => {
@@ -35,20 +36,15 @@ const Login = () => {
       console.log(data);
       const { success, message, token } = data;
       if (success) {
-        // Store token in localStorage for dashboard authentication
         if (token) {
           localStorage.setItem("token", token);
         }
-
-        // Redirect immediately to dashboard
         const isLocal =
           window.location.hostname === "localhost" ||
           window.location.hostname === "127.0.0.1";
-
         const dashboardUrl = isLocal
           ? "http://localhost:3001"
           : "https://zenotrade-dashboard.onrender.com";
-        // Pass token as URL parameter to avoid localStorage sync issues
         window.location.href = `${dashboardUrl}?token=${token}`;
       } else {
         handleError(message);
@@ -60,34 +56,32 @@ const Login = () => {
   };
 
   return (
-    <div className="form_container">
-      <h2>Login Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
+    <div className="auth-container">
+      <div className="form-box">
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
             value={email}
-            placeholder="Enter your email"
+            placeholder="Email"
             onChange={handleOnChange}
+            required
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
           <input
             type="password"
             name="password"
             value={password}
-            placeholder="Enter your password"
+            placeholder="Password"
             onChange={handleOnChange}
+            required
           />
-        </div>
-        <button type="submit">Submit</button>
-        <span>
-          Don't have an account? <Link to={"/signup"}>Signup</Link>
-        </span>
-      </form>
+          <button type="submit">Login</button>
+        </form>
+        <p className="switch-text">
+          Don't have an account? <Link to="/signup">Sign Up</Link>
+        </p>
+      </div>
     </div>
   );
 };

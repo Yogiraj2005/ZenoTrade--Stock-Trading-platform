@@ -12,6 +12,7 @@ const Signup = () => {
         username: "",
     });
     const { email, password, username } = inputValue;
+
     const handleOnChange = (e) => {
         const { name, value } = e.target;
         setInputValue({
@@ -20,10 +21,8 @@ const Signup = () => {
         });
     };
 
-    const handleError = (err) =>
-        alert(err); // Simple alert
-    const handleSuccess = (msg) =>
-        alert(msg);
+    const handleError = (err) => alert(err);
+    const handleSuccess = (msg) => alert(msg);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,7 +37,6 @@ const Signup = () => {
             const { success, message, token } = data;
             if (success) {
                 handleSuccess(message);
-                // Store token in localStorage for dashboard authentication
                 if (token) {
                     localStorage.setItem("token", token);
                 }
@@ -60,44 +58,40 @@ const Signup = () => {
     };
 
     return (
-        <div className="form_container">
-            <h2>Signup Account</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={email}
-                        placeholder="Enter your email"
-                        onChange={handleOnChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">Username</label>
+        <div className="auth-container">
+            <div className="form-box">
+                <h1>Create Account</h1>
+                <form onSubmit={handleSubmit}>
                     <input
                         type="text"
                         name="username"
                         value={username}
-                        placeholder="Enter your username"
+                        placeholder="Name"
                         onChange={handleOnChange}
+                        required
                     />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="Email"
+                        onChange={handleOnChange}
+                        required
+                    />
                     <input
                         type="password"
                         name="password"
                         value={password}
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         onChange={handleOnChange}
+                        required
                     />
-                </div>
-                <button type="submit">Submit</button>
-                <span>
-                    Already have an account? <Link to={"/login"}>Login</Link>
-                </span>
-            </form>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p className="switch-text">
+                    Already have an account? <Link to="/login">Login</Link>
+                </p>
+            </div>
         </div>
     );
 };
