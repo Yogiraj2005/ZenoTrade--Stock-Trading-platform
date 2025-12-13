@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../axiosConfig";
 import {
   Box,
   Grid,
@@ -44,9 +44,7 @@ const Summary = ({ user }) => {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      const { data: orders } = await axios.get(`${API_URL}/allOrders`, {
-        withCredentials: true,
-      });
+      const { data: orders } = await axios.get(`${API_URL}/allOrders`);
 
       // Calculate holdings
       const stockMap = {};
