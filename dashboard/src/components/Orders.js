@@ -202,9 +202,9 @@ const Orders = () => {
                 <TableCell align="center">
                   <strong>Product</strong>
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <strong>Actions</strong>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -263,7 +263,7 @@ const Orders = () => {
                         variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       <Tooltip title="Delete Order">
                         <IconButton
                           size="small"
@@ -273,7 +273,7 @@ const Orders = () => {
                           <DeleteIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   List,
@@ -22,9 +22,11 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AppsIcon from "@mui/icons-material/Apps";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import API_URL from "../api";
 
 const Menu = ({ user }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const menuItems = [
@@ -45,8 +47,13 @@ const Menu = ({ user }) => {
   };
 
   const handleLogout = () => {
-    // Implement logout logic
+    // Clear all authentication data
+    localStorage.removeItem("token");
+    localStorage.removeItem("user"); // if you store user data
+    sessionStorage.clear(); // clear any session data
+
     handleClose();
+    navigate("/login");
   };
 
   const getUserInitials = () => {
