@@ -36,7 +36,16 @@ app.use("/", authRoute);
 
 // Middleware to extract userId from JWT
 const getUserIdFromToken = (req, res, next) => {
-  const token = req.cookies.token;
+  // Check Authorization header first, then cookies
+  let token;
+  const authHeader = req.headers['authorization'];
+
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.split(' ')[1];
+  } else if (req.cookies.token) {
+    token = req.cookies.token;
+  }
+
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
   }
