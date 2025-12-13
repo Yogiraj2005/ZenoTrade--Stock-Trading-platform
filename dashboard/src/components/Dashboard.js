@@ -15,6 +15,7 @@ const Dashboard = ({ user }) => {
   return (
     <Box sx={{ display: "flex", flexGrow: 1, bgcolor: "#f5f7fa" }}>
       <GeneralContextProvider>
+        {/* WatchList - Visible on mobile, sidebar on desktop */}
         <Box
           sx={{
             width: { xs: "100%", md: 400 },
@@ -27,7 +28,14 @@ const Dashboard = ({ user }) => {
           <WatchList />
         </Box>
       </GeneralContextProvider>
-      <Box sx={{ flexGrow: 1, overflowY: "auto", height: "calc(100vh - 64px)" }}>
+      {/* Main Content - Hidden on mobile, visible on desktop */}
+      <Box sx={{
+        display: { xs: "none", md: "block" },
+        flexGrow: 1,
+        overflowY: "auto",
+        height: "calc(100vh - 64px)",
+        p: { xs: 1, sm: 2, md: 3 }
+      }}>
         <Routes>
           <Route exact path="/" element={<Summary user={user} />} />
           <Route path="/orders" element={<Orders />} />
