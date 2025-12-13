@@ -10,6 +10,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const { email, password } = inputValue;
 
   const handleOnChange = (e) => {
@@ -25,6 +26,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const { data } = await axios.post(
         `${API_URL}/login`,
@@ -48,10 +50,12 @@ const Login = () => {
         window.location.href = `${dashboardUrl}?token=${token}`;
       } else {
         handleError(message);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
       handleError("Login failed. Please try again.");
+      setIsLoading(false);
     }
   };
 
@@ -67,6 +71,7 @@ const Login = () => {
             placeholder="Email"
             onChange={handleOnChange}
             required
+            disabled={isLoading}
           />
           <input
             type="password"
@@ -75,8 +80,18 @@ const Login = () => {
             placeholder="Password"
             onChange={handleOnChange}
             required
+            disabled={isLoading}
           />
-          <button type="submit">Login</button>
+          <button type="submit" disabled={isLoading} className={isLoading ? 'loading' : ''}>
+            {isLoading ? (
+              <>
+                <span className="spinner"></span>
+                Logging in...
+              </>
+            ) : (
+              'Login'
+            )}
+          </button>
         </form>
         <p className="switch-text">
           Don't have an account? <Link to="/signup">Sign Up</Link>
