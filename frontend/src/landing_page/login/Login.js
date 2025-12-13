@@ -54,7 +54,7 @@ const Login = () => {
             : "https://zenotrade-dashboard.onrender.com";
           // Pass token as URL parameter to avoid localStorage sync issues
           window.location.href = `${dashboardUrl}?token=${token}`;
-        }, 500);
+        }, 200);
       } else {
         handleError(message);
       }
