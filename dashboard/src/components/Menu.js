@@ -149,7 +149,7 @@ const Menu = ({ user }) => {
           </Typography>
         </Box>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => { handleClose(); navigate('/'); }}>
           <ListItemIcon>
             <AccountCircleIcon fontSize="small" />
           </ListItemIcon>
