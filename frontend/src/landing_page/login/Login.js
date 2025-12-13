@@ -35,26 +35,21 @@ const Login = () => {
       console.log(data);
       const { success, message, token } = data;
       if (success) {
-        handleSuccess(message);
         // Store token in localStorage for dashboard authentication
         if (token) {
           localStorage.setItem("token", token);
         }
-        setInputValue({
-          email: "",
-          password: "",
-        });
-        setTimeout(() => {
-          const isLocal =
-            window.location.hostname === "localhost" ||
-            window.location.hostname === "127.0.0.1";
 
-          const dashboardUrl = isLocal
-            ? "http://localhost:3001"
-            : "https://zenotrade-dashboard.onrender.com";
-          // Pass token as URL parameter to avoid localStorage sync issues
-          window.location.href = `${dashboardUrl}?token=${token}`;
-        }, 200);
+        // Redirect immediately to dashboard
+        const isLocal =
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1";
+
+        const dashboardUrl = isLocal
+          ? "http://localhost:3001"
+          : "https://zenotrade-dashboard.onrender.com";
+        // Pass token as URL parameter to avoid localStorage sync issues
+        window.location.href = `${dashboardUrl}?token=${token}`;
       } else {
         handleError(message);
       }
