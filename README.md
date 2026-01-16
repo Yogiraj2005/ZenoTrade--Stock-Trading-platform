@@ -308,10 +308,17 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 👨‍💻 Author
 
-**Yogiraj**
+**Yogiraj Shinde**
 - GitHub: [@Yogiraj2005](https://github.com/Yogiraj2005)
 - LinkedIn: [Yogiraj Shinde](https://www.linkedin.com/in/yogiraj-shinde-155354295/)
 - Email: [yogirajshinde357@gmail.com](mailto:yogirajshinde357@gmail.com)
+
+
+- **Nipun Bhadane**
+- GitHub: ([@nipunbhadane123](https://github.com/nipunbhadane123))
+- LinkedIn: [View Profile](https://www.linkedin.com/in/nipun-bhadane-4370802b6/)
+- Email: [nipunbhadane3@gmail.com](mailto:nipunbhadane3@gmail.com)
+
 
 ## 🙏 Acknowledgments
 
